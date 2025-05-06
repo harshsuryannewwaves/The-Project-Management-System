@@ -16,7 +16,11 @@ const Login = () => {
                 password,
             });
             localStorage.setItem('token', res.data.token);
-            navigate('/dashboard');
+            if(res?.data?.user?.role === 'admin'){
+                navigate('/dashboard');
+            }else{
+                setMessage('User is Employee');
+            }
         } catch (error) {
             setMessage(error.response?.data?.message || 'Login failed.');
         }

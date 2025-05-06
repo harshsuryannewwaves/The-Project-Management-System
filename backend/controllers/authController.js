@@ -8,30 +8,30 @@ const generateToken = (user) => {
 };
 
 exports.loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-      console.log(password,user.password);
-      const isMatch = await bcrypt.compare(password, user.password);
-      console.log(isMatch);
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-  
-      res.json({
-        token: generateToken(user),
-        user: {
-          id: user._id,
-          name: user.name,
-          role: user.role,
-          email: user.email,
-        },
-      });
-    } catch (error) {
-      console.error('Login error:', error);
-      res.status(500).json({ message: 'Server error' });
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
-  };
+    console.log(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log(isMatch);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    res.json({
+      token: generateToken(user),
+      user: {
+        id: user._id,
+        name: user.name,
+        role: user.role,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
