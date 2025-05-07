@@ -1,12 +1,15 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 //create user
+
 exports.createUser = async (req, res) => {
     const { name, email, password, role } = req.body;
 
     try {
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'Email already registered' });
+
+
         const newUser = new User({ name, email, password, role });
         await newUser.save();
 
@@ -65,7 +68,6 @@ exports.updateUser = async (req, res) => {
 exports.changePassword = async (req, res) => {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     const userId = req.user.id;
-    console.log(userId);
     if (newPassword !== confirmPassword) {
         return res.status(400).json({ message: 'Passwords do not match' });
     }
@@ -76,7 +78,7 @@ exports.changePassword = async (req, res) => {
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Old password is incorrect' });
 
-    user.password = await bcrypt.hash(newPassword, 10);
+    user.password = newPassword;  // No need to hash the password here if the model hashes it
     await user.save();
 
     res.json({ message: 'Password updated successfully' });
