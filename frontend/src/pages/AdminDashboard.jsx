@@ -1,24 +1,51 @@
-import { Bell, UserCircle, Settings, BarChart2, Users, ClipboardList, CalendarCheck, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Bell, UserCircle, Settings, BarChart2, Users,
+  ClipboardList, CalendarCheck, FileText
+} from 'lucide-react';
 
 export default function AdminDashboard() {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-100 to-blue-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg p-6 space-y-6">
-        <div className="text-2xl font-bold text-blue-700">Admin Panel</div>
-        <nav className="space-y-4 text-sm">
-          <NavItem icon={<BarChart2 size={18} />} label="Dashboard" />
-          <NavItem icon={<ClipboardList size={18} />} label="Ticket Management" />
-          <NavItem icon={<CalendarCheck size={18} />} label="Task Management" />
-          <NavItem icon={<FileText size={18} />} label="Timesheet" />
-          <NavItem icon={<Users size={18} />} label="User Management" />
-          <NavItem icon={<Settings size={18} />} label="System Settings" />
+      <motion.aside
+        className="bg-white shadow-lg p-4 pt-6 relative"
+        initial={{ width: 72 }}
+        animate={{ width: isHovered ? 256 : 72 }}
+        transition={{ duration: 0.3 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="text-2xl font-bold text-blue-700 mb-8 h-10 overflow-hidden flex items-center">
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div
+                key="label"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+              >
+                Admin Panel
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <nav className="space-y-6 text-sm">
+          <NavItem icon={<BarChart2 size={18} />} label="Dashboard" isHovered={isHovered} />
+          <NavItem icon={<ClipboardList size={18} />} label="Ticket Management" isHovered={isHovered} />
+          <NavItem icon={<CalendarCheck size={18} />} label="Task Management" isHovered={isHovered} />
+          <NavItem icon={<FileText size={18} />} label="Timesheet" isHovered={isHovered} />
+          <NavItem icon={<Users size={18} />} label="User Management" isHovered={isHovered} />
+          <NavItem icon={<Settings size={18} />} label="System Settings" isHovered={isHovered} />
         </nav>
-      </aside>
+      </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8">
-        {/* Header */}
+      <main className="flex-1 p-8 transition-all">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-2xl font-semibold text-gray-800">Welcome back, Admin 👋</h1>
@@ -38,7 +65,7 @@ export default function AdminDashboard() {
           <Card title="Hours Logged Today" value="12h 45m" color="bg-blue-100" textColor="text-blue-600" />
         </div>
 
-        {/* You can add tables, charts, or recent activity below */}
+        {/* Recent Activity */}
         <div className="mt-10">
           <h2 className="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h2>
           <div className="bg-white shadow rounded-lg p-4 text-sm text-gray-600">
@@ -51,15 +78,25 @@ export default function AdminDashboard() {
 }
 
 // NavItem Component
-function NavItem({ icon, label }) {
+function NavItem({ icon, label, isHovered }) {
   return (
-    <a
-      href="#"
-      className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition"
-    >
+    <div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-all">
       {icon}
-      {label}
-    </a>
+      <AnimatePresence>
+        {isHovered && (
+          <motion.span
+            key="label"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+            className="whitespace-nowrap"
+          >
+            {label}
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

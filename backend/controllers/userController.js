@@ -83,3 +83,4 @@ exports.changePassword = async (req, res) => {
 
     res.json({ message: 'Password updated successfully' });
 };
+
