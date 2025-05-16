@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "cd9e3e48-7867-4781-823c-f0fb2004a607",
+		"name": "Project Managemet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43755141",
+		"_collection_link": "https://harsh-2002089.postman.co/workspace/harsh's-Workspace~3c7b4006-19bf-442b-84c1-6f72e7ebeb6f/collection/43755141-cd9e3e48-7867-4781-823c-f0fb2004a607?action=share&source=collection_link&creator=43755141"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "create-project-assign-member",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTBjNzZmODFkODk5ZmNiYWFjOTMzNSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc0NzM3ODc1MCwiZXhwIjoxNzQ3OTgzNTUwfQ.LVD4xxdyxq56XFXzijUs-7l1jlDAOtVja3_CY8k51Bc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "New Website",
+									"description": "Required",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Some description",
+									"description": "Optional",
+									"type": "text"
+								},
+								{
+									"key": "assignedMembers",
+									"value": "6819c1e8f874a0f32fc111cf,681ca70f294f62ae3cac91f6",
+									"description": "Send as CSV string or send multiple keys with same name",
+									"type": "text"
+								},
+								{
+									"key": "endTime",
+									"value": "2025-12-31T23:59:59.000Z",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/dell/Documents/Projects/BET.zip"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/projects/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all project for admin and user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWNhNzBmMjk0ZjYyYWUzY2FjOTFmNiIsInJvbGUiOiJlbXBsb3llZSIsImlhdCI6MTc0NzM4MDYxOCwiZXhwIjoxNzQ3OTg1NDE4fQ.0ReAG7FvTtas5CZAcBSREgXTQnwbEstNaKTTwLWW0CQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/projects",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get specific project for admin and user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWNhNzBmMjk0ZjYyYWUzY2FjOTFmNiIsInJvbGUiOiJlbXBsb3llZSIsImlhdCI6MTc0NzM4MTUzNywiZXhwIjoxNzQ3OTg2MzM3fQ.dVZH9qWAvDTN9X5imTyTKcvsaZGQbdtMZQ8sCD2zmhw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/projects/6826e824492131a90a69b2ae",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"projects",
+								"6826e824492131a90a69b2ae"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin-login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Employee-login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"harsh.suryan11@gmail.com\",\r\n    \"password\": \"58b5cb64\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-user-create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTBjNzZmODFkODk5ZmNiYWFjOTMzNSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc0NjUxODQ5MiwiZXhwIjoxNzQ3MTIzMjkyfQ.QeeYn05nuwiNvbz_XUICpVA750VhIIFEhohArYge85M",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"Harsh\",\r\n\"email\": \"harsh.suryan11@gmail.com\",\r\n\"password\": \"user123\",\r\n\"role\": \"employee\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-user-update-name-email",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTBjNzZmODFkODk5ZmNiYWFjOTMzNSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc0NjUxODQ5MiwiZXhwIjoxNzQ3MTIzMjkyfQ.QeeYn05nuwiNvbz_XUICpVA750VhIIFEhohArYge85M",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"royjackson@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user/6819c1e8f874a0f32fc111cf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user",
+						"6819c1e8f874a0f32fc111cf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change-password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MWIzNjQ1YTU4NzRmYzk0MjVlMjI2YSIsInJvbGUiOiJlbXBsb3llZSIsImlhdCI6MTc0NjYxMzgzNCwiZXhwIjoxNzQ3MjE4NjM0fQ.LPWcPt_X5abB7MyCWTI9QQLOnwLK3b0A-xtWovySeKA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\": \"Harsh123\",\r\n  \"newPassword\": \"Harsh123\",\r\n  \"confirmPassword\": \"Harsh123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forgot-password",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"harsh.suryan11@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/forgot-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

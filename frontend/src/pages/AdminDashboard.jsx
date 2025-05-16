@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell, UserCircle, Settings, BarChart2, Users,
-  ClipboardList, CalendarCheck, FileText
+  ClipboardList, CalendarCheck, FileText,
+  FolderGit2
 } from 'lucide-react';
+import DashboardSection from '@/components/admin/DashboardSection';
+import ProjectManagementSection from '@/components/admin/ProjectManagementSection';
+import TicketManagementSection from '@/components/admin/TicketManagementSection';
+import TaskManagementSection from '@/components/admin/TaskManagementSection';
+import TimesheetSection from '@/components/admin/TimesheetSection';
+import UserManagementSection from '@/components/admin/UserManagementSection';
 
 export default function AdminDashboard() {
   const [isHovered, setIsHovered] = useState(false);
+  const [activeSection, setActiveSection] = useState('Dashboard');
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-100 to-blue-50">
@@ -35,12 +43,12 @@ export default function AdminDashboard() {
           </AnimatePresence>
         </div>
         <nav className="space-y-6 text-sm">
-          <NavItem icon={<BarChart2 size={18} />} label="Dashboard" isHovered={isHovered} />
-          <NavItem icon={<ClipboardList size={18} />} label="Ticket Management" isHovered={isHovered} />
-          <NavItem icon={<CalendarCheck size={18} />} label="Task Management" isHovered={isHovered} />
-          <NavItem icon={<FileText size={18} />} label="Timesheet" isHovered={isHovered} />
-          <NavItem icon={<Users size={18} />} label="User Management" isHovered={isHovered} />
-          <NavItem icon={<Settings size={18} />} label="System Settings" isHovered={isHovered} />
+          <NavItem icon={<BarChart2 size={18} />} label="Dashboard" isHovered={isHovered} onClick={setActiveSection} />
+          <NavItem icon={<FolderGit2 size={18} />} label="Project Management" isHovered={isHovered} onClick={setActiveSection} />
+          <NavItem icon={<ClipboardList size={18} />} label="Ticket Management" isHovered={isHovered} onClick={setActiveSection} />
+          <NavItem icon={<CalendarCheck size={18} />} label="Task Management" isHovered={isHovered} onClick={setActiveSection} />
+          <NavItem icon={<FileText size={18} />} label="Timesheet" isHovered={isHovered} onClick={setActiveSection} />
+          <NavItem icon={<Users size={18} />} label="User Management" isHovered={isHovered} onClick={setActiveSection} />
         </nav>
       </motion.aside>
 
@@ -57,30 +65,28 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card title="Total Users" value="158" color="bg-indigo-100" textColor="text-indigo-600" />
-          <Card title="Active Tickets" value="27" color="bg-red-100" textColor="text-red-600" />
-          <Card title="Completed Tasks" value="89" color="bg-green-100" textColor="text-green-600" />
-          <Card title="Hours Logged Today" value="12h 45m" color="bg-blue-100" textColor="text-blue-600" />
-        </div>
+        {/* Dynamic Content Section */}
+        {activeSection === 'Dashboard' && <DashboardSection />}
+        {activeSection === 'Project Management' && <ProjectManagementSection />}
+        {activeSection === 'Ticket Management' && <TicketManagementSection />}
+        {activeSection === 'Task Management' && <TaskManagementSection />}
+        {activeSection === 'Timesheet' && <TimesheetSection />}
+        {activeSection === 'User Management' && <UserManagementSection />}
+        {activeSection === 'System Settings' && <SystemSettingsSection />}
 
-        {/* Recent Activity */}
-        <div className="mt-10">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">Recent Activity</h2>
-          <div className="bg-white shadow rounded-lg p-4 text-sm text-gray-600">
-            <p>No recent activity available.</p>
-          </div>
-        </div>
       </main>
     </div>
   );
 }
 
+
 // NavItem Component
-function NavItem({ icon, label, isHovered }) {
+function NavItem({ icon, label, isHovered, onClick }) {
   return (
-    <div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-all">
+    <div
+      className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-all cursor-pointer"
+      onClick={() => onClick(label)}
+    >
       {icon}
       <AnimatePresence>
         {isHovered && (
@@ -100,12 +106,5 @@ function NavItem({ icon, label, isHovered }) {
   );
 }
 
-// Card Component
-function Card({ title, value, color, textColor }) {
-  return (
-    <div className={`p-6 rounded-xl shadow-sm ${color}`}>
-      <h2 className="text-sm font-medium text-gray-600">{title}</h2>
-      <p className={`text-2xl font-bold ${textColor}`}>{value}</p>
-    </div>
-  );
-}
+
+
