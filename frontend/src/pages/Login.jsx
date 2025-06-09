@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SplineScene } from "@/components/ui/splineScene";
 import { Spotlight } from "@/components/ui/spotlight";
 import { Card } from "@/components/ui/card";
@@ -19,6 +19,8 @@ const Login = () => {
                 password,
             });
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('role', res.data.user.role);
+            localStorage.setItem('name', res.data.user.name);
             if (res?.data?.user?.role === 'admin') {
                 navigate('/admindashboard');
             } else {
@@ -81,9 +83,10 @@ const Login = () => {
                             required
                         />
                         <div className="flex justify-between items-center text-sm text-gray-600">
-                            <a href="#" className="hover:underline text-blue-600">
-                                Forgot Password?
-                            </a>
+                            <p className="text-sm text-blue-600 hover:underline">
+                                <Link to="/forgot-password">Forgot your password?</Link>
+                            </p>
+
                         </div>
                         <button
                             type="submit"

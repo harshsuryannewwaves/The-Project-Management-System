@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.9.94",
     "@tailwindcss/vite": "^4.1.4",
@@ -17,6 +18,8 @@
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "framer-motion": "^12.11.0",
     "lucide-react": "^0.507.0",
     "node": "^24.0.1",

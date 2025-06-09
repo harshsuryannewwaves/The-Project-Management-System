@@ -3,14 +3,14 @@ const bcrypt = require('bcryptjs');
 //create user
 
 exports.createUser = async (req, res) => {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, designation } = req.body;
 
     try {
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'Email already registered' });
 
-
-        const newUser = new User({ name, email, password, role });
+        designation = "Fresher";
+        const newUser = new User({ name, email, password, role, designation });
         await newUser.save();
 
         res.status(201).json({
@@ -31,7 +31,7 @@ exports.createUser = async (req, res) => {
 //update user
 exports.updateUser = async (req, res) => {
     try {
-        const { name, email } = req.body;
+        const { name, email, designation } = req.body;
 
         // Check if the user is trying to update their own details or if they are an admin
         if (req.user.role !== 'admin' && req.user.id !== req.params.id) {
@@ -46,7 +46,7 @@ exports.updateUser = async (req, res) => {
         // Update user details
         if (name) user.name = name;
         if (email) user.email = email;
-
+        if (designation) user.designation = designation;
         await user.save(); // Save the updated user
 
         res.json({
@@ -84,3 +84,13 @@ exports.changePassword = async (req, res) => {
     res.json({ message: 'Password updated successfully' });
 };
 
+exports.getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
+    } catch (err) {
+        console.error('Get profile error:', err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

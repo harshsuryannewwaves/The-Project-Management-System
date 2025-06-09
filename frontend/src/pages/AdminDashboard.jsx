@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell, UserCircle, Settings, BarChart2, Users,
@@ -11,11 +11,30 @@ import TicketManagementSection from '@/components/admin/TicketManagementSection'
 import TaskManagementSection from '@/components/admin/TaskManagementSection';
 import TimesheetSection from '@/components/admin/TimesheetSection';
 import UserManagementSection from '@/components/admin/UserManagementSection';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminDashboard() {
   const [isHovered, setIsHovered] = useState(false);
   const [activeSection, setActiveSection] = useState('Dashboard');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-100 to-blue-50">
       {/* Sidebar */}
@@ -45,8 +64,8 @@ export default function AdminDashboard() {
         <nav className="space-y-6 text-sm">
           <NavItem icon={<BarChart2 size={18} />} label="Dashboard" isHovered={isHovered} onClick={setActiveSection} />
           <NavItem icon={<FolderGit2 size={18} />} label="Project Management" isHovered={isHovered} onClick={setActiveSection} />
-          <NavItem icon={<ClipboardList size={18} />} label="Ticket Management" isHovered={isHovered} onClick={setActiveSection} />
           <NavItem icon={<CalendarCheck size={18} />} label="Task Management" isHovered={isHovered} onClick={setActiveSection} />
+          <NavItem icon={<ClipboardList size={18} />} label="Ticket Management" isHovered={isHovered} onClick={setActiveSection} />
           <NavItem icon={<FileText size={18} />} label="Timesheet" isHovered={isHovered} onClick={setActiveSection} />
           <NavItem icon={<Users size={18} />} label="User Management" isHovered={isHovered} onClick={setActiveSection} />
         </nav>
@@ -61,7 +80,31 @@ export default function AdminDashboard() {
           </div>
           <div className="flex items-center gap-4">
             <Bell className="w-6 h-6 text-gray-600 cursor-pointer" />
-            <UserCircle className="w-8 h-8 text-gray-600 cursor-pointer" />
+            <div className="relative" ref={dropdownRef}>
+              <UserCircle
+                className="w-8 h-8 text-gray-600 cursor-pointer"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              />
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+                  <button
+                    onClick={() => {
+                      navigate('/profile');
+                      setDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
