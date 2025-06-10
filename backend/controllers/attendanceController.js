@@ -1,6 +1,6 @@
 const Attendance = require('../models/Attendance');
 const User = require('../models/User');
-
+const Notification = require('../models/Notification');
 // Create attendance (Employee only)
 exports.createAttendance = async (req, res) => {
     try {
@@ -19,7 +19,17 @@ exports.createAttendance = async (req, res) => {
             timesheet: status === 'present' ? timesheet : [],
             approved: false, // always false on creation
         });
-
+        const admins = await User.find({ role: 'admin' }); // notify all admins
+        await Promise.all(
+            admins.map(admin =>
+                Notification.create({
+                    type: 'attendance',
+                    message: `${req.user.name} submitted attendance for ${date}`,
+                    user: admin._id,
+                    link: `/attendance/${attendance._id}`
+                })
+            )
+        );
 
         res.status(201).json(attendance);
     } catch (err) {
@@ -81,6 +91,12 @@ exports.updateAttendance = async (req, res) => {
 
 
         await attendance.save();
+        await Notification.create({
+            type: 'attendance',
+            message: `Your attendance for ${attendance.date} has been ${approved ? 'approved' : 'updated'} by Admin`,
+            user: attendance.user,
+            link: `/attendance/${attendance._id}`
+        });
         res.status(200).json(attendance);
     } catch (err) {
         console.error('Update Attendance Error:', err.message);

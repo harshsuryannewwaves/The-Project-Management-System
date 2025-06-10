@@ -35,6 +35,65 @@ export default function AdminDashboard() {
     localStorage.removeItem('token');
     navigate('/');
   };
+   const [notes, setNotes] = useState([]);
+  const [playSound, setPlaySound] = useState(false);
+const [show, setShow] = useState(false);
+  useEffect(() => {
+    fetchNotes();
+    const interval = setInterval(fetchNotes, 30000); // poll every 30s
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchNotes = async () => {
+    const res = await fetch('http://localhost:5000/api/notifications', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    const data = await res.json();
+    const unread = data.filter(n => !n.isRead);
+    if (unread.length > notes.filter(n => !n.isRead).length) setPlaySound(true);
+    setNotes(data);
+  };
+
+  useEffect(() => {
+    if (playSound) {
+      new Audio('http://localhost:5000/notification.mp3').play();
+      setPlaySound(false);
+    }
+  }, [playSound]);
+
+  const markRead = async (id) => {
+    await fetch(`http://localhost:5000/api/notifications/${id}/read`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    setNotes(notes.map(n => n._id === id ? { ...n, isRead: true } : n));
+  };
+
+  const deleteOne = async (id) => {
+    await fetch(`http://localhost:5000/api/notifications/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    setNotes(notes.filter(n => n._id !== id));
+  };
+
+  const clearAll = async () => {
+    await fetch(`http://localhost:5000/api/notifications`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    setNotes([]);
+  };
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+
+    if (hour < 12) return { text: "Good Morning", icon: "🌅" };
+    if (hour < 17) return { text: "Good Afternoon", icon: "☀️" };
+    if (hour < 20) return { text: "Good Evening", icon: "🌇" };
+    return { text: "Good Night", icon: "🌙" };
+  };
+
+  const { text, icon } = getGreeting();
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-gray-100 to-blue-50">
       {/* Sidebar */}
@@ -74,12 +133,44 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 p-8 transition-all">
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-800">Welcome back, Admin 👋</h1>
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold text-gray-800">
+              {text} Admin {icon}
+            </h1>
             <p className="text-sm text-gray-500">Here's what's happening today</p>
           </div>
           <div className="flex items-center gap-4">
-            <Bell className="w-6 h-6 text-gray-600 cursor-pointer" />
+            <div className="relative">
+              <Bell className="cursor-pointer" onClick={() => setShow(!show)} />
+              {notes.some(n => !n.isRead) && (
+                <span className="absolute top-[-4px] right-[-5px] bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {notes.filter(n => !n.isRead).length}
+                </span>
+              )}
+              {show && (
+                <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-md z-50">
+                  <div className="flex justify-between items-center p-2 border-b">
+                    <h4>Notifications</h4>
+                    <button onClick={clearAll} className="text-sm text-blue-600">Clear All</button>
+                  </div>
+                  <div className="max-h-64 overflow-y-auto">
+                    {notes.length === 0 && <div className="p-4 text-center text-gray-600">No notifications</div>}
+                    {notes.map(n => (
+                      <div
+                        key={n._id}
+                        className={`p-2 border-b flex justify-between items-center ${n.isRead ? 'bg-gray-50' : 'bg-white'}`}
+                      >
+                        <p className="flex-1 hover:underline">{n.message}</p>
+                        {!n.isRead && (
+                          <button onClick={() => markRead(n._id)} className="text-sm text-green-600 mr-2">Mark Read</button>
+                        )}
+                        <button onClick={() => deleteOne(n._id)} className="text-sm text-red-600">×</button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="relative" ref={dropdownRef}>
               <UserCircle
                 className="w-8 h-8 text-gray-600 cursor-pointer"

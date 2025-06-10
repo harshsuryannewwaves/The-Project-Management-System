@@ -19,6 +19,14 @@ exports.createTicket = async (req, res) => {
       assignedTo,
       createdBy: req.user.id
     });
+    if (assignedTo) {
+      await Notification.create({
+        type: 'ticket',
+        message: `You have been assigned a new ticket: ${title}`,
+        user: assignedTo,
+        link: `/tickets/${ticket._id}`
+      });
+    }
 
     res.status(201).json(ticket);
   } catch (err) {
@@ -102,6 +110,14 @@ exports.updateTicket = async (req, res) => {
     if (image) ticket.image = image;
 
     await ticket.save();
+    if (ticket.assignedTo) {
+      await Notification.create({
+        type: 'ticket',
+        message: `Ticket "${ticket.title}" has been updated.`,
+        user: ticket.assignedTo,
+        link: `/tickets/${ticket._id}`
+      });
+    }
     res.status(200).json(ticket);
   } catch (err) {
     console.error('Error updating ticket:', err.message);
@@ -121,7 +137,13 @@ exports.deleteTicket = async (req, res) => {
     ) {
       return res.status(403).json({ message: 'Not authorized to delete this ticket' });
     }
-
+    if (ticket.assignedTo) {
+      await Notification.create({
+        type: 'ticket',
+        message: `Ticket "${ticket.title}" was deleted.`,
+        user: ticket.assignedTo
+      });
+    }
     await ticket.deleteOne();
     res.status(200).json({ message: 'Ticket deleted' });
   } catch (err) {

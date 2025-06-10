@@ -8,6 +8,7 @@ const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,6 @@ app.use('/api/tickets', ticketRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/uploads', express.static('uploads'));
-
+app.use('/api', notificationRoutes); 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

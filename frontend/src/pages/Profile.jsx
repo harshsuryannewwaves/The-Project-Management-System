@@ -42,10 +42,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-start">
       <div className="w-full max-w-xl bg-white shadow-lg rounded-xl p-8 relative mt-10">
-        <ArrowLeftCircle
-          className="absolute left-4 top-4 text-gray-500 hover:text-blue-600 cursor-pointer"
-          onClick={() => navigate('/')}
-        />
+      
         <h2 className="text-2xl font-bold text-center text-blue-700 mb-6">My Profile</h2>
 
         {/* View-Only Info */}

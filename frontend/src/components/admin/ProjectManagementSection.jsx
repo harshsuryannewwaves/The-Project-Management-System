@@ -207,7 +207,7 @@ export default function ProjectManagementSection() {
               <div>
                 {project.file ? (
                   <a
-                    href={`../../../../backend${project.file}`}
+                    href={`http://localhost:5000${project.file}`}
                     download
                     className="text-blue-600 hover:underline"
                   >

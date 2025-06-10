@@ -1,5 +1,6 @@
 const Task = require('../models/Task');
 const User = require('../models/User');
+const Notification = require('../models/Notification');
 
 // Create Task
 exports.createTask = async (req, res) => {
@@ -16,7 +17,14 @@ exports.createTask = async (req, res) => {
             assignedTo,
             assignedBy: req.user.id,
             project
-        }); res.status(201).json(task);
+        });
+        await Notification.create({
+  type: 'task',
+  message: `You have been assigned a new task: ${title}`,
+  user: assignedTo,
+  link: `/tasks/${task._id}`
+});
+        res.status(201).json(task);
     } catch (err) {
         console.error('Error creating task:', err.message);
         res.status(500).json({ message: 'Server error' });
@@ -70,6 +78,12 @@ exports.updateTask = async (req, res) => {
         if (status) task.status = status;
 
         await task.save();
+        await Notification.create({
+  type: 'task',
+  message: `Task "${task.title}" has been updated.`,
+  user: task.assignedTo,
+  link: `/tasks/${task._id}`
+});
         res.status(200).json(task);
     } catch (err) {
         console.error('Error updating task:', err.message);
@@ -86,7 +100,11 @@ exports.deleteTask = async (req, res) => {
         if (req.user.role !== 'admin' && task.assignedBy.toString() !== req.user.id) {
             return res.status(403).json({ message: 'Not authorized to delete this task' });
         }
-
+await Notification.create({
+  type: 'task',
+  message: `Your task "${task.title}" was deleted.`,
+  user: task.assignedTo,
+});
         await task.deleteOne();
         res.status(200).json({ message: 'Task deleted' });
     } catch (err) {

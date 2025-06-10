@@ -20,7 +20,8 @@ export default function TicketManagementSection() {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem('token') || '';
-
+const role = localStorage.getItem('role') || ''; // example token storage
+  const loginName = localStorage.getItem('name') || ''; // example token storage
   const axiosConfig = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -192,12 +193,12 @@ export default function TicketManagementSection() {
                   >
                     Edit
                   </button>
-                  <button
+              {  (role === 'admin' || ticket.createdBy.name === loginName) &&  <button
                     onClick={() => handleDelete(ticket._id)}
                     className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
-                  </button>
+                  </button>}
                 </td>
               </tr>
             ))}

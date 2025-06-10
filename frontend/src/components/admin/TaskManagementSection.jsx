@@ -23,6 +23,8 @@ export default function TaskManagementSection() {
 
   // Auth token - replace with your auth logic
   const token = localStorage.getItem('token') || ''; // example token storage
+  const role = localStorage.getItem('role') || ''; // example token storage
+  const loginName = localStorage.getItem('name') || ''; // example token storage
 
   // Common axios config with Auth header
   const axiosConfig = {
@@ -136,7 +138,7 @@ export default function TaskManagementSection() {
       setMessage('Error deleting task');
     }
   };
-
+console.log(tasks)
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">Task Management</h2>
@@ -181,12 +183,12 @@ export default function TaskManagementSection() {
                   >
                     Edit
                   </button>
-                  <button
+                  {(role === 'admin' || task.assignedBy.name === loginName) && <button
                     onClick={() => handleDelete(task._id)}
                     className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
                   >
                     Delete
-                  </button>
+                  </button>}
                 </td>
               </tr>
             ))}

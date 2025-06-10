@@ -1,37 +1,47 @@
 const { default: mongoose } = require('mongoose');
 const Project = require('../models/Project');
+const Notification = require('../models/Notification');
 const path = require('path');
 
 // Admin: Create project
 exports.createProject = async (req, res) => {
-    try {
-        const { name, description, endTime } = req.body;
-        const file = req.file ? `/uploads/${req.file.filename}` : null;
+  try {
+    const { name, description, endTime } = req.body;
+    const file = req.file ? `/uploads/${req.file.filename}` : null;
 
-        let assignedMembers = req.body.assignedMembers;
+    let assignedMembers = req.body.assignedMembers;
 
-        // Normalize assignedMembers to an array of valid ObjectId strings
-        const memberIds = Array.isArray(assignedMembers)
-            ? assignedMembers
-            : typeof assignedMembers === 'string'
-                ? assignedMembers.split(',').map(id => id.trim().replace(/^["']|["']$/g, ''))
-                : [];
+    // Normalize assignedMembers to an array of valid ObjectId strings
+    const memberIds = Array.isArray(assignedMembers)
+      ? assignedMembers
+      : typeof assignedMembers === 'string'
+        ? assignedMembers.split(',').map(id => id.trim().replace(/^["']|["']$/g, ''))
+        : [];
 
 
 
-        const project = await Project.create({
-            name,
-            description,
-            assignedMembers: memberIds, // ✅ correct key
-            file,
-            endTime
-        });
-
-        res.status(201).json(project);
-    } catch (err) {
-        console.error('Project creation error:', err);
-        res.status(500).json({ error: 'Failed to create project' });
-    }
+    const project = await Project.create({
+      name,
+      description,
+      assignedMembers: memberIds, // ✅ correct key
+      file,
+      endTime
+    });
+    await Promise.all(
+      memberIds.map(memberId =>
+        Notification.create({
+          type: 'project',
+          message: `You have been assigned to project "${project.name}"`,
+          user: memberId,
+          link: `/projects/${project._id}`
+        })
+      )
+    );
+    res.status(201).json(project);
+  } catch (err) {
+    console.error('Project creation error:', err);
+    res.status(500).json({ error: 'Failed to create project' });
+  }
 };
 
 
