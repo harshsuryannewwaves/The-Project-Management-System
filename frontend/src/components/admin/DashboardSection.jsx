@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export default function DashboardSection() {
   const [stats, setStats] = useState({});
   const [selectedCard, setSelectedCard] = useState('');
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetch('https://the-project-management-system-backend.onrender.com/api/dashboard/stats')
+    fetch(`${API_BASE_URL}/api/dashboard/stats`)
       .then(res => res.json())
       .then(data => setStats(data));
   }, []);
 
   const handleCardClick = (type) => {
     setSelectedCard(type);
-    fetch(`https://the-project-management-system-backend.onrender.com/api/dashboard/${type}`)
+    fetch(`${API_BASE_URL}/api/dashboard/${type}`)
       .then(res => res.json())
       .then(data => setTableData(data));
   };

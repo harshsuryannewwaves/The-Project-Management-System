@@ -31,7 +31,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
   // Fetch data
   const fetchTickets = async () => {
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/tickets', axiosConfig);
+      const res = await axios.get(`${API_BASE_URL}/api/tickets`, axiosConfig);
       setTickets(res.data);
     } catch (err) {
       console.error('Error fetching tickets');
@@ -40,7 +40,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/projects', axiosConfig);
+      const res = await axios.get(`${API_BASE_URL}/api/projects`, axiosConfig);
       setProjects(res.data);
     } catch (err) {
       console.error('Error fetching projects');
@@ -49,7 +49,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/dashboard/employees', axiosConfig);
+      const res = await axios.get(`${API_BASE_URL}/api/dashboard/employees`, axiosConfig);
       const employeesOnly = res.data.filter((u) => u.role === 'employee');
       setEmployees(employeesOnly);
     } catch (err) {
@@ -113,7 +113,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
 
     try {
       if (editingTicket) {
-        await axios.put(`https://the-project-management-system-backend.onrender.com/api/tickets/${editingTicket._id}`, fd, {
+        await axios.put(`${API_BASE_URL}/api/tickets/${editingTicket._id}`, fd, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -121,7 +121,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
         });
         setMessage('Ticket updated.');
       } else {
-        await axios.post('https://the-project-management-system-backend.onrender.com/api/tickets/create', fd, {
+        await axios.post(`${API_BASE_URL}/api/tickets/create`, fd, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -139,7 +139,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this ticket?')) return;
     try {
-      await axios.delete(`https://the-project-management-system-backend.onrender.com/api/tickets/${id}`, axiosConfig);
+      await axios.delete(`${API_BASE_URL}/api/tickets/${id}`, axiosConfig);
       setMessage('Ticket deleted.');
       fetchTickets();
     } catch (err) {
@@ -285,7 +285,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
               <div> <label className="block mb-1 font-medium">Image</label> <input type="file" accept="image/*" onChange={handleFileChange} className="w-full" /> </div>
               {editingTicket?.image && (
 
-                <div className="mb-2"> <img src={`https://the-project-management-system-backend.onrender.com${editingTicket.image}`} alt="ticket" className="w-32 h-auto rounded" /> </div>)}
+                <div className="mb-2"> <img src={`${API_BASE_URL}${editingTicket.image}`} alt="ticket" className="w-32 h-auto rounded" /> </div>)}
               <div className="flex justify-end gap-2">
                 <button
                   type="button"

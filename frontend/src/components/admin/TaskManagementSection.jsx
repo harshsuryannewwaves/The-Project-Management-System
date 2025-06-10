@@ -35,7 +35,7 @@ export default function TaskManagementSection() {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/tasks', axiosConfig);
+      const res = await axios.get(`${API_BASE_URL}/api/tasks`, axiosConfig);
       setTasks(res.data);
     } catch (err) {
       setMessage('Error fetching tasks');
@@ -47,7 +47,7 @@ export default function TaskManagementSection() {
   // Fetch users for assigning tasks
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/dashboard/employees', axiosConfig);
+      const res = await axios.get(`${API_BASE_URL}/api/dashboard/employees`, axiosConfig);
       setUsers(res.data);
     } catch (err) {
       // fail silently
@@ -57,7 +57,7 @@ export default function TaskManagementSection() {
   // Fetch projects for assigning tasks
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/projects', axiosConfig);
+      const res = await axios.get(`${API_BASE_URL}/api/projects`, axiosConfig);
       setProjects(res.data);
     } catch (err) {
       // fail silently
@@ -113,11 +113,11 @@ export default function TaskManagementSection() {
     try {
       if (editingTask) {
         // update
-        await axios.put(`https://the-project-management-system-backend.onrender.com/api/tasks/${editingTask._id}`, form, axiosConfig);
+        await axios.put(`${API_BASE_URL}/api/tasks/${editingTask._id}`, form, axiosConfig);
         setMessage('Task updated successfully');
       } else {
         // create
-        await axios.post('https://the-project-management-system-backend.onrender.com/api/tasks/create', form, axiosConfig);
+        await axios.post(`${API_BASE_URL}/api/tasks/create`, form, axiosConfig);
         setMessage('Task created successfully');
       }
       setModalOpen(false);
@@ -131,7 +131,7 @@ export default function TaskManagementSection() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this task?')) return;
     try {
-      await axios.delete(`https://the-project-management-system-backend.onrender.com/api/tasks/${id}`, axiosConfig);
+      await axios.delete(`${API_BASE_URL}/api/tasks/${id}`, axiosConfig);
       setMessage('Task deleted');
       fetchTasks();
     } catch (err) {

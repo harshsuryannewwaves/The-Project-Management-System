@@ -22,7 +22,7 @@ const UserManagementSection = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/dashboard/employees');
+      const res = await axios.get(`${API_BASE_URL}/api/dashboard/employees`);
       setUsers(res.data);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -37,7 +37,7 @@ const UserManagementSection = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('https://the-project-management-system-backend.onrender.com/api/user/create', createForm,{
+      await axios.post(`${API_BASE_URL}/api/user/create`, createForm,{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -61,7 +61,7 @@ const UserManagementSection = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`https://the-project-management-system-backend.onrender.com/api/user/${editingUser._id}`, editForm,{
+      await axios.put(`${API_BASE_URL}/api/user/${editingUser._id}`, editForm,{
       headers: {
         Authorization: `Bearer ${token}`
       }

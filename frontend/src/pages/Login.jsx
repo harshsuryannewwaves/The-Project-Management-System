@@ -14,7 +14,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('https://the-project-management-system-backend.onrender.com/api/auth/login', {
+            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, {
                 email,
                 password,
             });

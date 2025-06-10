@@ -31,7 +31,7 @@ export default function ProjectManagementSection() {
 
   const fetchProjects = async () => {
     const token = localStorage.getItem('token');
-    const res = await fetch('https://the-project-management-system-backend.onrender.com/api/projects', {
+    const res = await fetch(`${API_BASE_URL}/api/projects`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -41,7 +41,7 @@ export default function ProjectManagementSection() {
   };
 
   const fetchEmployees = async () => {
-    const res = await fetch('https://the-project-management-system-backend.onrender.com/api/dashboard/employees');
+    const res = await fetch(`${API_BASE_URL}/api/dashboard/employees`);
     const data = await res.json();
     setEmployees(data);
   };
@@ -70,7 +70,7 @@ export default function ProjectManagementSection() {
     if (formData.file) payload.append('file', formData.file);
     selectedMembers.forEach(id => payload.append('assignedMembers', id));
 
-    const res = await fetch('https://the-project-management-system-backend.onrender.com/api/projects/create', {
+    const res = await fetch(`${API_BASE_URL}/api/projects/create`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -207,7 +207,7 @@ export default function ProjectManagementSection() {
               <div>
                 {project.file ? (
                   <a
-                    href={`https://the-project-management-system-backend.onrender.com${project.file}`}
+                    href={`${API_BASE_URL}${project.file}`}
                     download
                     className="text-blue-600 hover:underline"
                   >

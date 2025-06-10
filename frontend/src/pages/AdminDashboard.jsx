@@ -45,7 +45,7 @@ const [show, setShow] = useState(false);
   }, []);
 
   const fetchNotes = async () => {
-    const res = await fetch('https://the-project-management-system-backend.onrender.com/api/notifications', {
+    const res = await fetch(`${API_BASE_URL}/api/notifications`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     const data = await res.json();
@@ -56,13 +56,13 @@ const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (playSound) {
-      new Audio('https://the-project-management-system-backend.onrender.com/notification.mp3').play();
+      new Audio(`${API_BASE_URL}/notification.mp3`).play();
       setPlaySound(false);
     }
   }, [playSound]);
 
   const markRead = async (id) => {
-    await fetch(`https://the-project-management-system-backend.onrender.com/api/notifications/${id}/read`, {
+    await fetch(`${API_BASE_URL}/api/notifications/${id}/read`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
@@ -70,7 +70,7 @@ const [show, setShow] = useState(false);
   };
 
   const deleteOne = async (id) => {
-    await fetch(`https://the-project-management-system-backend.onrender.com/api/notifications/${id}`, {
+    await fetch(`${API_BASE_URL}/api/notifications/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
@@ -78,7 +78,7 @@ const [show, setShow] = useState(false);
   };
 
   const clearAll = async () => {
-    await fetch(`https://the-project-management-system-backend.onrender.com/api/notifications`, {
+    await fetch(`${API_BASE_URL}/api/notifications`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });

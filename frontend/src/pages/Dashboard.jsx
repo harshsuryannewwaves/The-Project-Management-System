@@ -23,7 +23,7 @@ export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState('Dashboard');
   const employee_name = localStorage.getItem('name');
   useEffect(() => {
-    axios.get('https://the-project-management-system-backend.onrender.com/api/user/me', {
+    axios.get(`${API_BASE_URL}/api/user/me`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchNotes = async () => {
-    const res = await fetch('https://the-project-management-system-backend.onrender.com/api/notifications', {
+    const res = await fetch(`${API_BASE_URL}/api/notifications`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     const data = await res.json();
@@ -71,13 +71,13 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (playSound) {
-      new Audio('https://the-project-management-system-backend.onrender.com/notification.mp3').play();
+      new Audio(`${API_BASE_URL}/notification.mp3`).play();
       setPlaySound(false);
     }
   }, [playSound]);
 
   const markRead = async (id) => {
-    await fetch(`https://the-project-management-system-backend.onrender.com/api/notifications/${id}/read`, {
+    await fetch(`${API_BASE_URL}/api/notifications/${id}/read`, {
       method: 'PUT',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
   };
 
   const deleteOne = async (id) => {
-    await fetch(`https://the-project-management-system-backend.onrender.com/api/notifications/${id}`, {
+    await fetch(`${API_BASE_URL}/api/notifications/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
   };
 
   const clearAll = async () => {
-    await fetch(`https://the-project-management-system-backend.onrender.com/api/notifications`, {
+    await fetch(`${API_BASE_URL}/api/notifications`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
