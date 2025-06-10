@@ -6,14 +6,14 @@ export default function DashboardSection() {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/dashboard/stats')
+    fetch('https://the-project-management-system-backend.onrender.com/api/dashboard/stats')
       .then(res => res.json())
       .then(data => setStats(data));
   }, []);
 
   const handleCardClick = (type) => {
     setSelectedCard(type);
-    fetch(`http://localhost:5000/api/dashboard/${type}`)
+    fetch(`https://the-project-management-system-backend.onrender.com/api/dashboard/${type}`)
       .then(res => res.json())
       .then(data => setTableData(data));
   };

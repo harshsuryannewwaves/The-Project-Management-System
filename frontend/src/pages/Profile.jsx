@@ -14,7 +14,7 @@ export default function Profile() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/user/me', {
+      .get('https://the-project-management-system-backend.onrender.com/api/user/me', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
       .then(res => setUser(res.data))
@@ -27,7 +27,7 @@ export default function Profile() {
       const { oldPassword, newPassword, confirmPassword } = passwordForm;
 
       const res = await axios.put(
-        'http://localhost:5000/api/user/change-password',
+        'https://the-project-management-system-backend.onrender.com/api/user/change-password',
         { oldPassword, newPassword, confirmPassword },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

@@ -39,7 +39,7 @@ export default function TimesheetCalendarSection() {
   const fetchAttendanceData = async () => {
     try {
       const month = format(currentMonth, 'yyyy-MM');
-      const res = await axios.get(`http://localhost:5000/api/attendance?month=${month}`, { headers });
+      const res = await axios.get(`https://the-project-management-system-backend.onrender.com/api/attendance?month=${month}`, { headers });
       const dataMap = {};
       res.data.forEach(item => {
         const key = format(new Date(item.date), 'yyyy-MM-dd');
@@ -79,7 +79,7 @@ export default function TimesheetCalendarSection() {
   const submitAttendance = async () => {
     try {
       await axios.post(
-        'http://localhost:5000/api/attendance/create',
+        'https://the-project-management-system-backend.onrender.com/api/attendance/create',
         {
           date: selectedDate,
           status,
@@ -121,7 +121,7 @@ export default function TimesheetCalendarSection() {
       if (!attendanceId) return alert('Record not found.');
 
       await axios.put(
-        `http://localhost:5000/api/attendance/${attendanceId}`,
+        `https://the-project-management-system-backend.onrender.com/api/attendance/${attendanceId}`,
         { approved: true },
         { headers }
       );
@@ -142,7 +142,7 @@ const filtered = records.filter((r) => {
   const approveRecord = async (id) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/attendance/${id}`,
+        `https://the-project-management-system-backend.onrender.com/api/attendance/${id}`,
         { approved: true },
         { headers }
       );
@@ -154,7 +154,7 @@ const filtered = records.filter((r) => {
   };
 const fetchData = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/attendance', { headers });
+      const res = await axios.get('https://the-project-management-system-backend.onrender.com/api/attendance', { headers });
       setRecords(res.data);
     } catch (err) {
       console.error('Fetch error:', err.message);
