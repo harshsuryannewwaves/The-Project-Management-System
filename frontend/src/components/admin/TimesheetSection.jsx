@@ -12,6 +12,7 @@ import {
 } from 'date-fns';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export default function TimesheetCalendarSection() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [days, setDays] = useState([]);

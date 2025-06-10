@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ArrowLeftCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export default function Profile() {
   const [user, setUser] = useState({});
   const [passwordForm, setPasswordForm] = useState({

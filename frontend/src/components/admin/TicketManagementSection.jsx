@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export default function TicketManagementSection() {
   const [tickets, setTickets] = useState([]);
   const [projects, setProjects] = useState([]);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export default function ProjectManagementSection() {
   const [projects, setProjects] = useState([]);
   const [employees, setEmployees] = useState([]);

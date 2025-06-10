@@ -13,6 +13,7 @@ import TimesheetSection from '@/components/admin/TimesheetSection';
 import UserManagementSection from '@/components/admin/UserManagementSection';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 export default function AdminDashboard() {
   const [isHovered, setIsHovered] = useState(false);
   const [activeSection, setActiveSection] = useState('Dashboard');

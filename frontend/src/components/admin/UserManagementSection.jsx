@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const UserManagementSection = () => {
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState('');

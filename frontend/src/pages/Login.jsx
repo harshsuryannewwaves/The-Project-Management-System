@@ -5,6 +5,7 @@ import { SplineScene } from "@/components/ui/splineScene";
 import { Spotlight } from "@/components/ui/spotlight";
 import { Card } from "@/components/ui/card";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
