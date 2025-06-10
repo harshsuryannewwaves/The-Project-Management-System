@@ -13,7 +13,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(cors({ origin: 'https://vncprojectmanagementsystem.netlify.app', credentials: true }));
+app.use(cors({ origin: 'https://bucolic-alpaca-7b34f0.netlify.app', credentials: true }));
 app.use(express.json());
 
 // Connect to DB
