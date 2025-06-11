@@ -6,7 +6,6 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { Card } from "@/components/ui/card";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
-
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,30 +33,40 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center p-4">
-            <div className="w-full max-w-6xl bg-white/30 rounded-2xl shadow-lg flex flex-col md:flex-row overflow-hidden backdrop-blur-md">
-                
-                {/* 3D Section - hidden on small screens */}
-                <div className="hidden md:block md:w-2/3">
-                    <Card className="h-full w-full bg-black/[0.96] rounded-none">
+        <div className="h-screen bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 flex items-center justify-center ">
+            <div className="w-full bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 rounded-2xl shadow-lg flex overflow-hidden">
+
+                {/* Left 3D Section */}
+                <div className="w-2/3 p-0 relative hidden md:block">
+                    <Card className="w-auto h-screen bg-black/[0.96] relative overflow-hidden rounded-none">
                         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="white" />
-                        <div className="h-full w-full">
-                            <SplineScene
-                                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                                className="w-full h-[500px] md:h-full"
-                            />
+                        <div className="flex h-full">
+                            {/* Left text content */}
+
+                            {/* Right 3D visual */}
+                            <div className="flex-1 relative">
+                                <SplineScene
+                                    scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                                    className="w-full h-full"
+                                />
+                            </div>
                         </div>
                     </Card>
                 </div>
 
-                {/* Login Form */}
-                <div className="w-full md:w-1/3 p-8 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100">
-                    <div className="text-center mb-6">
-                        <h1 className="text-3xl md:text-4xl font-bold text-black">VNConnect</h1>
-                        <p className="text-sm mt-2 text-black">Centralized hub for all work/project management</p>
+
+                {/* Right Login Form */}
+                <div className="w-1/3 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 p-8">
+                    <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
+                        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-black text-center">
+                            VNConnect
+                        </h1>
+                        <p className="mt-4 text-black max-w-lg text-center">
+                             centralized hub for all work/project management
+                        </p>
                     </div>
-                    <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Login</h2>
-                    <form onSubmit={handleLogin} className="space-y-4">
+                    <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Login</h2>
+                    <form onSubmit={handleLogin} className="space-y-5">
                         <input
                             type="email"
                             placeholder="Email"
@@ -75,9 +84,10 @@ const Login = () => {
                             required
                         />
                         <div className="flex justify-between items-center text-sm text-gray-600">
-                            <Link to="/forgot-password" className="text-blue-600 hover:underline">
-                                Forgot your password?
-                            </Link>
+                            <p className="text-sm text-blue-600 hover:underline">
+                                <Link to="/forgot-password">Forgot your password?</Link>
+                            </p>
+
                         </div>
                         <button
                             type="submit"
