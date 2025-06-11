@@ -286,7 +286,7 @@ const role = localStorage.getItem('role') || ''; // example token storage
               <div> <label className="block mb-1 font-medium">Image</label> <input type="file" accept="image/*" onChange={handleFileChange} className="w-full" /> </div>
               {editingTicket?.image && (
 
-                <div className="mb-2"> <img src={`${API_BASE_URL}${editingTicket.image}`} alt="ticket" className="w-32 h-auto rounded" /> </div>)}
+                <div className="mb-2"> <img src={editingTicket.image} alt="ticket" className="w-32 h-auto rounded" /> </div>)}
               <div className="flex justify-end gap-2">
                 <button
                   type="button"

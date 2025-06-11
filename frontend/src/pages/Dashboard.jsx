@@ -149,72 +149,79 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 p-8 transition-all">
-        <div className="flex justify-between items-center mb-8">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              {text} {employee_name} {icon}
-            </h1>
-            <p className="text-sm text-gray-500">Here's what's happening today</p>
+        <div className="flex justify-between items-center mb-8 p-4 bg-white shadow-md rounded-lg border border-gray-200">
+  <div className="mb-2">
+    <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+      {text} Admin {icon}
+    </h1>
+    <p className="text-sm text-gray-500">Here's what's happening today</p>
+  </div>
+
+  <div className="flex items-center gap-6">
+    {/* Notifications */}
+    <div className="relative">
+      <Bell className="cursor-pointer text-gray-600 hover:text-blue-600 transition" onClick={() => setShow(!show)} />
+      {notes.some(n => !n.isRead) && (
+        <span className="absolute top-[-4px] right-[-5px] bg-red-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+          {notes.filter(n => !n.isRead).length}
+        </span>
+      )}
+      {show && (
+        <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-md z-50 border border-gray-200">
+          <div className="flex justify-between items-center p-3 border-b">
+            <h4 className="text-sm font-semibold">Notifications</h4>
+            <button onClick={clearAll} className="text-xs text-blue-600 hover:underline">Clear All</button>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Bell className="cursor-pointer" onClick={() => setShow(!show)} />
-              {notes.some(n => !n.isRead) && (
-                <span className="absolute top-[-4px] right-[-5px] bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  {notes.filter(n => !n.isRead).length}
-                </span>
-              )}
-              {show && (
-                <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-md z-50">
-                  <div className="flex justify-between items-center p-2 border-b">
-                    <h4>Notifications</h4>
-                    <button onClick={clearAll} className="text-sm text-blue-600">Clear All</button>
-                  </div>
-                  <div className="max-h-64 overflow-y-auto">
-                    {notes.length === 0 && <div className="p-4 text-center text-gray-600">No notifications</div>}
-                    {notes.map(n => (
-                      <div
-                        key={n._id}
-                        className={`p-2 border-b flex justify-between items-center ${n.isRead ? 'bg-gray-50' : 'bg-white'}`}
-                      >
-                        <p className="flex-1 hover:underline">{n.message}</p>
-                        {!n.isRead && (
-                          <button onClick={() => markRead(n._id)} className="text-sm text-green-600 mr-2">Mark Read</button>
-                        )}
-                        <button onClick={() => deleteOne(n._id)} className="text-sm text-red-600">×</button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="relative" ref={dropdownRef}>
-              <UserCircle
-                className="w-8 h-8 text-gray-600 cursor-pointer"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              />
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
-                  <button
-                    onClick={() => {
-                      navigate('/profile');
-                      setDropdownOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Profile
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+          <div className="max-h-64 overflow-y-auto">
+            {notes.length === 0 && (
+              <div className="p-4 text-center text-gray-600 text-sm">No notifications</div>
+            )}
+            {notes.map(n => (
+              <div
+                key={n._id}
+                className={`p-3 border-b flex justify-between items-center text-sm ${n.isRead ? 'bg-gray-50' : 'bg-white'}`}
+              >
+                <p className="flex-1 hover:underline">{n.message}</p>
+                {!n.isRead && (
+                  <button onClick={() => markRead(n._id)} className="text-green-600 hover:underline mr-2">Mark Read</button>
+                )}
+                <button onClick={() => deleteOne(n._id)} className="text-red-600 hover:underline">×</button>
+              </div>
+            ))}
           </div>
         </div>
+      )}
+    </div>
+
+    {/* User Dropdown */}
+    <div className="relative" ref={dropdownRef}>
+      <UserCircle
+        className="w-8 h-8 text-gray-600 cursor-pointer hover:text-blue-600 transition"
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+      />
+      {dropdownOpen && (
+        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+          <button
+            onClick={() => {
+              navigate('/profile');
+              setDropdownOpen(false);
+            }}
+            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+          >
+            Profile
+          </button>
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
 
         {/* Dynamic Content Section */}
         {activeSection === 'Dashboard' && <DashboardSection />}

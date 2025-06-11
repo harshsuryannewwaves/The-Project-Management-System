@@ -208,7 +208,7 @@ export default function ProjectManagementSection() {
               <div>
                 {project.file ? (
                   <a
-                    href={`${API_BASE_URL}${project.file}`}
+                    href={project.file}
                     download
                     className="text-blue-600 hover:underline"
                   >

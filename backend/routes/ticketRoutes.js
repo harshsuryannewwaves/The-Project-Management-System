@@ -9,7 +9,10 @@ const {
 } = require('../controllers/ticketController');
 
 const { protect } = require('../middlewares/authMiddleware');
-const upload = require('../middlewares/upload');
+const multer = require('multer');
+const { storage } = require('../utils/cloudinary');
+const upload = multer({ storage });
+
 
 // Create ticket (Employee or Admin)
 router.post('/create', protect, upload.single('image'), createTicket);

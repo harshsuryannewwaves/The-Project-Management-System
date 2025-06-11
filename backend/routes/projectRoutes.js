@@ -6,7 +6,10 @@ getProjects,
 getProjectById,
 } = require('../controllers/projectController');
 const { protect,isAdmin } = require('../middlewares/authMiddleware');
-const upload = require('../config/multer');
+const multer = require('multer');
+const { storage } = require('../utils/cloudinary');
+const upload = multer({ storage });
+
 
 // Get specific project
 router.get('/:id', protect, getProjectById);

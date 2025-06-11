@@ -1,60 +1,95 @@
 import { useEffect, useState } from 'react';
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function DashboardSection() {
   const [stats, setStats] = useState({});
+  const [loadingStats, setLoadingStats] = useState(true);
   const [selectedCard, setSelectedCard] = useState('');
   const [tableData, setTableData] = useState([]);
+  const [loadingTable, setLoadingTable] = useState(false);
 
   useEffect(() => {
+    setLoadingStats(true);
     fetch(`${API_BASE_URL}/api/dashboard/stats`)
       .then(res => res.json())
-      .then(data => setStats(data));
+      .then(data => {
+        setStats(data);
+        setLoadingStats(false);
+      })
+      .catch(() => setLoadingStats(false));
   }, []);
 
   const handleCardClick = (type) => {
     setSelectedCard(type);
+    setLoadingTable(true);
     fetch(`${API_BASE_URL}/api/dashboard/${type}`)
       .then(res => res.json())
-      .then(data => setTableData(data));
+      .then(data => {
+        setTableData(data);
+        setLoadingTable(false);
+      })
+      .catch(() => setLoadingTable(false));
   };
+
+  const cardList = [
+    { title: 'Total Employees', key: 'totalEmployees', type: 'employees' },
+    { title: 'Projects Completed', key: 'projectsCompleted', type: 'projects-completed' },
+    { title: 'Projects In Progress', key: 'projectsInProgress', type: 'projects-in-progress' },
+    { title: 'Tickets Raised', key: 'ticketsRaised', type: 'tickets' },
+    { title: 'Tickets Closed', key: 'ticketsClosed', type: 'tickets-closed' },
+    { title: 'Pending Tickets', key: 'ticketsPending', type: 'tickets-pending' },
+  ];
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-800 mb-6">Dashboard Overview</h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">📊 Dashboard Overview</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <Card title="Total Employees" value={stats.totalEmployees} onClick={() => handleCardClick('employees')} />
-        <Card title="Projects Completed" value={stats.projectsCompleted} onClick={() => handleCardClick('projects-completed')} />
-        <Card title="Projects In Progress" value={stats.projectsInProgress} onClick={() => handleCardClick('projects-in-progress')} />
-        <Card title="Tickets Raised" value={stats.ticketsRaised} onClick={() => handleCardClick('tickets')} />
-        <Card title="Tickets Closed" value={stats.ticketsClosed} onClick={() => handleCardClick('tickets-closed')} />
-        <Card title="Pending Tickets" value={stats.ticketsPending} onClick={() => handleCardClick('tickets-pending')} />
-      </div>
+      {loadingStats ? (
+        <div className="text-center py-10 text-blue-600 font-medium">Loading dashboard stats...</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {cardList.map((card) => (
+            <Card
+              key={card.title}
+              title={card.title}
+              value={stats[card.key]}
+              onClick={() => handleCardClick(card.type)}
+            />
+          ))}
+        </div>
+      )}
 
       {selectedCard && (
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4 capitalize">{selectedCard.replaceAll('-', ' ')} Details</h3>
-          {tableData.length === 0 ? (
+        <div className="bg-white p-6 rounded-lg shadow-md transition-all">
+          <h3 className="text-lg font-semibold mb-4 capitalize">
+            {selectedCard.replaceAll('-', ' ')} Details
+          </h3>
+
+          {loadingTable ? (
+            <div className="text-center py-10 text-blue-500 font-medium">Loading table data...</div>
+          ) : tableData.length === 0 ? (
             <p className="text-gray-500 text-sm">No data available.</p>
           ) : (
-            <table className="w-full table-auto text-sm text-left">
-              <thead>
-                <tr className="bg-gray-100">
-                  {Object.keys(tableData[0]).map((key) => (
-                    <th key={key} className="px-4 py-2 capitalize">{key}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((item, idx) => (
-                  <tr key={idx} className="border-t">
-                    {Object.values(item).map((val, i) => (
-                      <td key={i} className="px-4 py-2">{val?.toString()}</td>
+            <div className="overflow-auto max-h-[60vh]">
+              <table className="w-full table-auto text-sm text-left border rounded-lg">
+                <thead className="bg-gray-100 sticky top-0 z-10">
+                  <tr>
+                    {Object.keys(tableData[0]).map((key) => (
+                      <th key={key} className="px-4 py-2 capitalize whitespace-nowrap">{key}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {tableData.map((item, idx) => (
+                    <tr key={idx} className="border-t hover:bg-gray-50">
+                      {Object.values(item).map((val, i) => (
+                        <td key={i} className="px-4 py-2 whitespace-nowrap">{val?.toString()}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       )}
@@ -66,10 +101,10 @@ function Card({ title, value, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer p-6 rounded-xl shadow-sm bg-blue-50 hover:bg-blue-100 transition"
+      className="cursor-pointer p-6 rounded-xl shadow hover:shadow-lg transition-all duration-200 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200"
     >
       <h2 className="text-sm font-medium text-gray-600">{title}</h2>
-      <p className="text-2xl font-bold text-blue-600">{value ?? '—'}</p>
+      <p className="text-2xl font-bold text-blue-700 mt-2">{value ?? '—'}</p>
     </div>
   );
 }

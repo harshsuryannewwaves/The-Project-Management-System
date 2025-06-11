@@ -7,7 +7,8 @@ const path = require('path');
 exports.createProject = async (req, res) => {
   try {
     const { name, description, endTime } = req.body;
-    const file = req.file ? `/uploads/${req.file.filename}` : null;
+    const file = req.file ? req.file.path : null; // Cloudinary URL
+
 
     let assignedMembers = req.body.assignedMembers;
 

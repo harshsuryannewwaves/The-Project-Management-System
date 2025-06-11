@@ -8,7 +8,8 @@ exports.createTicket = async (req, res) => {
 
     if (!title) return res.status(400).json({ message: 'Title is required' });
 
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
+    const imagePath = req.file ? req.file.path : "";
+
 
     const ticket = await Ticket.create({
       title,
