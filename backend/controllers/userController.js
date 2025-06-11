@@ -39,7 +39,7 @@ exports.createUser = async (req, res) => {
           </ul>
           <p style="color: #555;">Please log in and change your password after your first login for security.</p>
           <br>
-          <p>Regards,<br><strong>Build Amaze Team</strong></p>
+          <p>Regards,<br><strong>VNC Team</strong></p>
         </div>
       `
     };
