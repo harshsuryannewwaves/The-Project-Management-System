@@ -152,7 +152,7 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center mb-8 p-4 bg-white shadow-md rounded-lg border border-gray-200">
   <div className="mb-2">
     <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
-      {text} Admin {icon}
+      {text} {employee_name} {icon}
     </h1>
     <p className="text-sm text-gray-500">Here's what's happening today</p>
   </div>
