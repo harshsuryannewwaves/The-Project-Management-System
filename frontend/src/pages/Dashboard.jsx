@@ -158,7 +158,7 @@ export default function AdminDashboard() {
 
   {/* Main Content */}
   <main className="flex-1 p-4 sm:p-6 transition-all">
-    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 p-4 bg-white shadow-md rounded-lg border border-gray-200">
+    <div className="flex flex-col sm:flex-col sm:justify-between sm:items-center mb-6 p-4 bg-white shadow-md rounded-lg border border-gray-200">
       <div className="mb-4 sm:mb-0">
         <h1 className="text-lg sm:text-2xl font-semibold text-gray-800 flex flex-wrap items-center gap-2">
           {text} {employee_name} {icon}
