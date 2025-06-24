@@ -92,8 +92,8 @@ export default function ProjectManagementSection() {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Project Management</h2>
+    <div className="p-4 sm:p-6">
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Project Management</h2>
 
       {isAdmin && (
         <>
@@ -106,63 +106,63 @@ export default function ProjectManagementSection() {
 
           {/* Modal */}
           {isModalOpen && (
-            <div className="fixed inset-0 bg-black/40 z-40 flex justify-center items-center">
-              <div className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg relative z-50">
+            <div className="fixed inset-0 bg-black/40 z-40 flex justify-center items-center p-4">
+              <div className="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 rounded shadow-lg relative z-50">
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="absolute top-2 right-3 text-5xl text-gray-500"
+                  className="absolute top-2 right-3 text-4xl text-gray-500"
                 >
                   &times;
                 </button>
                 <h3 className="text-lg font-bold mb-4">Create New Project</h3>
                 <form onSubmit={handleSubmit}>
-                  <label className="block mb-2">Project Name</label>
+                  <label className="block mb-2 text-sm">Project Name</label>
                   <input
                     type="text"
                     name="name"
                     placeholder="Project Name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="border p-2 mb-3 w-full"
+                    className="border p-2 mb-3 w-full rounded"
                     required
                   />
 
-                  <label className="block mb-2">Description</label>
+                  <label className="block mb-2 text-sm">Description</label>
                   <textarea
                     name="description"
                     placeholder="Description"
                     value={formData.description}
                     onChange={handleChange}
-                    className="border p-2 mb-3 w-full"
+                    className="border p-2 mb-3 w-full rounded"
                   />
 
-                  <label className="block mb-2">End Time</label>
+                  <label className="block mb-2 text-sm">End Time</label>
                   <input
                     type="datetime-local"
                     name="endTime"
                     value={formData.endTime}
                     onChange={handleChange}
-                    className="border p-2 mb-3 w-full"
+                    className="border p-2 mb-3 w-full rounded"
                     required
                   />
 
-                  <label className="block mb-2">Upload File</label>
+                  <label className="block mb-2 text-sm">Upload File</label>
                   <input
                     type="file"
                     name="file"
                     onChange={handleChange}
-                    className="border p-2 mb-3 w-full"
+                    className="border p-2 mb-3 w-full rounded"
                   />
 
-                  <label className="block mb-2">Assign Members</label>
-                  <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto border p-2 mb-2">
+                  <label className="block mb-2 text-sm">Assign Members</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto border p-2 mb-2 rounded">
                     {employees.map(emp => (
                       <div
                         key={emp._id}
                         onClick={() => toggleMember(emp._id)}
-                        className={`cursor-pointer px-2 py-1 rounded border ${selectedMembers.includes(emp._id)
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200'
+                        className={`cursor-pointer px-2 py-1 rounded border text-sm ${selectedMembers.includes(emp._id)
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-100 hover:bg-gray-200'
                           }`}
                       >
                         {emp.name} ({emp.email})
@@ -170,12 +170,12 @@ export default function ProjectManagementSection() {
                     ))}
                   </div>
 
-                  <div className="mb-3">
+                  <div className="mb-3 text-sm">
                     <strong>Selected Members:</strong>{' '}
                     {selectedMembers.length > 0 ? selectedMembers.join(', ') : 'None'}
                   </div>
 
-                  <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
+                  <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded text-sm">
                     Submit
                   </button>
                 </form>
@@ -188,8 +188,8 @@ export default function ProjectManagementSection() {
       <h3 className="text-lg font-bold mb-4">Projects</h3>
 
       <div className="w-full overflow-x-auto">
-        <div className="min-w-[600px]">
-          <div className="grid grid-cols-5 gap-4 font-semibold text-gray-700 border-b pb-2">
+        <div className="min-w-[700px]">
+          <div className="grid grid-cols-5 gap-4 font-semibold text-gray-700 border-b pb-2 text-sm">
             <div>Project Name</div>
             <div>Description</div>
             <div>End Date</div>
@@ -202,9 +202,9 @@ export default function ProjectManagementSection() {
               key={project._id}
               className="grid grid-cols-5 gap-4 py-4 border-b text-sm bg-white"
             >
-              <div className="font-medium">{project.name}</div>
-              <div>{project.description}</div>
-              <div>{new Date(project.endTime).toLocaleString()}</div>
+              <div className="font-medium break-words">{project.name}</div>
+              <div className="break-words">{project.description}</div>
+              <div className="whitespace-nowrap">{new Date(project.endTime).toLocaleString()}</div>
               <div>
                 {project.file ? (
                   <a
@@ -219,9 +219,9 @@ export default function ProjectManagementSection() {
                 )}
               </div>
               <div>
-                <ul className="list-disc ml-4">
+                <ul className="list-disc ml-4 space-y-1">
                   {project.assignedMembers.map(member => (
-                    <li key={member._id}>
+                    <li key={member._id} className="break-words">
                       {member.name} ({member.email})
                     </li>
                   ))}
@@ -231,7 +231,7 @@ export default function ProjectManagementSection() {
           ))}
         </div>
       </div>
-
     </div>
+
   );
 }
